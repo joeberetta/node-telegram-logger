@@ -19,7 +19,7 @@ $ npm install node-telegram-logger
 ## Usage
 
 ```js
-const { TelegramLogger } = require("node-telegram-logger");
+const { TelegramLogger } = require("node-telegram-log");
 
 const logger = new TelegramLogger(BOT_TOKEN_ID, CHAT_ID);
 

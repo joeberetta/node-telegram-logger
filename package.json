@@ -1,5 +1,5 @@
 {
-  "name": "node-telegram-logger",
+  "name": "node-telegram-log",
   "version": "1.0.0",
   "description": "Node.js log sender to Telegram",
   "main": "index.js",
@@ -18,7 +18,7 @@
     "url": "https://github.com/joeberetta/node-telegram-logger/issues"
   },
   "author": {
-    "email": "shakhrukh.97@gmail.com",
+    "email": "shakhrukh.shaymardonov.97@gmail.com",
     "name": "Joe Beretta",
     "url": "https://t.me/joeberetta"
   },
