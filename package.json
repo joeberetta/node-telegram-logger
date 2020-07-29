@@ -1,29 +1,29 @@
 {
-  "name": "node-telegram-log",
-  "version": "1.0.0",
-  "description": "Node.js log sender to Telegram",
-  "main": "index.js",
-  "keywords": [
-    "node.js",
-    "telegram",
-    "bot",
-    "logger"
-  ],
-  "homepage": "https://github.com/joeberetta/node-telegram-logger",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/joeberetta/node-telegram-logger.git"
-  },
-  "bugs": {
-    "url": "https://github.com/joeberetta/node-telegram-logger/issues"
-  },
-  "author": {
-    "email": "shakhrukh.shaymardonov.97@gmail.com",
-    "name": "Joe Beretta",
-    "url": "https://t.me/joeberetta"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "superagent": "^5.3.1"
-  }
+	"name": "node-telegram-log",
+	"version": "1.0.1",
+	"description": "Node.js log sender to Telegram",
+	"main": "index.js",
+	"keywords": [
+		"node.js",
+		"telegram",
+		"bot",
+		"logger"
+	],
+	"homepage": "https://github.com/joeberetta/node-telegram-logger",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/joeberetta/node-telegram-logger.git"
+	},
+	"bugs": {
+		"url": "https://github.com/joeberetta/node-telegram-logger/issues"
+	},
+	"author": {
+		"email": "shakhrukh.shaymardonov.97@gmail.com",
+		"name": "Joe Beretta",
+		"url": "https://t.me/joeberetta"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"superagent": "^5.3.1"
+	}
 }

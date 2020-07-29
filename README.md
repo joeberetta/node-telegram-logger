@@ -19,21 +19,21 @@ $ npm install node-telegram-logger
 ## Usage
 
 ```js
-const { TelegramLogger } = require("node-telegram-log");
+const { TelegramLogger } = require('node-telegram-log');
 
 const logger = new TelegramLogger(BOT_TOKEN_ID, CHAT_ID);
 
 // Log some message
-logger.log("Yuhuu! It's work");
+logger.log('Hooray! It works');
 // Formatted message
 /**
  * ℹ️ LOG
  *
- * Yuhuu! It's work
+ * Hooray! It works
  */
 
 // Or debug
-logger.debug("Just debugging it", { canILogObjects: true });
+logger.debug('Just debugging it', { canILogObjects: true });
 
 // Formatted message
 /**
@@ -45,16 +45,36 @@ logger.debug("Just debugging it", { canILogObjects: true });
  * }
  */
 
-// Even errors are formatted
-logger.error("Something went wrong: ", [1, { formatted: true }, "wow"]);
+// Mention user, who must to pay attention to this message
+// Note: @mentions work only if part of message starts with @username
+logger.error('@joeberetta', 'Something went wrong:', [
+	1,
+	{ formatted: true },
+	'wow',
+]);
 // Formatted message
 /**
  * 🆘 ERROR
  *
  * Something went wrong:
  * [1,{"formatted":true},"wow"]
+ *
+ * @joeberetta
  */
 ```
+
+## Changelog
+
+### 1.0.1
+
+- [x] Add user @mention for parts of message started with @username
+- [x] Add changelog
+- [x] Add usage examples
+
+### 1.0.0
+
+- [x] Support node >= 12 LTS
+- [x] Support sending log, debug, error messages to private and group chats
 
 ## Author
 
