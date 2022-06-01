@@ -1,134 +1,165 @@
-const https = require('superagent');
+const https = require('https');
+const util = require('util');
 
 exports.TelegramLogger = class TelegramLogger {
-	_baseUrl = 'https://api.telegram.org/bot';
-	_chatId = null;
+  /** @private @type {string} */
+  _ctx = this.constructor.name;
 
-	/**
-	 * @class TelegramLogger
-	 * @param {String} token should get from https://t.me/BotFather
-	 * @param {Number} chatId should get using https://t.me/MyIdBot
-	 */
-	constructor(token, chatId) {
-		this.init(token, chatId);
-		this._chatId = chatId;
-	}
-	/**
-	 * @private
-	 * @description Initial validation of bot `token` and `chatId`
-	 * @param {String} token
-	 * @param {Number} chatId
-	 */
-	async init(token, chatId) {
-		// Check token and chat
-		try {
-			this._baseUrl += token;
-			await https.get(`${this._baseUrl}/getMe`);
-			await https.post(`${this._baseUrl}/getChat`).send({
-				chat_id: chatId,
-			});
-		} catch (error) {
-			throw new Error(JSON.stringify(error.response.body || error, null, 2));
-		}
-		return this;
-	}
+  /** @private @type {string} */
+  _apiUrl = 'https://api.telegram.org/bot';
 
-	/**
-	 * @private
-	 * @description Sends log to chat
-	 * @param {String} type log message type
-	 * @param {any[]} data
-	 */
-	_sendMessage = async (type, data) => {
-		try {
-			await https.post(`${this._baseUrl}/sendMessage`).send({
-				chat_id: this._chatId,
-				text: this._fmt(type, data),
-				parse_mode: 'HTML',
-			});
-		} catch (error) {
-			throw new Error(JSON.stringify(error.response.body, null, 2));
-		}
-	};
+  /** @private @type {number | null} */
+  _chatId = null;
 
-	/**
-	 * @private
-	 * @description Formats message `body` of given `type`
-	 * @param {String} type message type
-	 * @param {any[]} body
-	 * @returns {String} formatted text
-	 */
-	_fmt = (type, body) => {
-		let head = '';
-		switch (type) {
-			case this.debug.name:
-				head = `⚙️ ${type.toUpperCase()}\n`;
-				break;
+  /**
+   * @class TelegramLogger
+   * @param {string} token should get from https://t.me/BotFather
+   * @param {number} chatId should get using https://t.me/MyIdBot
+   */
+  constructor(token, chatId) {
+    this._init(token, chatId);
+  }
 
-			case this.error.name:
-				head = `🆘 ${type.toUpperCase()}\n`;
-				break;
+  /**
+   * Sends `debug` message to chat
+   * @param {any} data
+   */
+  debug(...data) {
+    return this._sendMessage(this.debug.name, data);
+  }
 
-			default:
-				head = `ℹ️ ${this.log.name.toUpperCase()}\n`;
-				break;
-		}
+  /**
+   * Sends `error` message to chat
+   * @param {any} data
+   */
+  error(...data) {
+    return this._sendMessage(this.error.name, data);
+  }
 
-		const mentions = [];
-		return (
-			`<b>${head}</b>\n` +
-			`<pre>${body.reduce((message, current, i, body) => {
-				if (typeof current === 'object') {
-					message += `\n${JSON.stringify(
-						current,
-						null,
-						!Array.isArray(current) ? 2 : 0
-					)}${i < body.length - 1 ? '\n' : ''}`;
-				} else {
-					// send notification to user if log message has one
-					if (/^@[\w\d_]+/i.test(current)) {
-						// collect @mentions separate
-						const mentionList = current
-							.split(' ')
-							.filter((msg) => /^@[\w\d_]+/i.test(msg))
-							.flat(Infinity)
-							.join(' ');
-						mentions.push(mentionList);
+  /**
+   * Sends `log` message to chat
+   * @param {any} data
+   */
+  log(...data) {
+    return this._sendMessage(this.log.name, data);
+  }
 
-						const partsOfLog = current
-							.split(' ')
-							.filter((msg) => !/^@[\w\d_]+/i.test(msg))
-							.join(' ');
+  /**
+   * @description Initial validation of bot `token` and `chatId`
+   * @param {string} token
+   * @param {number} chatId
+   */
+  async _init(token, chatId) {
+    // Check token and chat
+    try {
+      this._apiUrl += token;
+      this._chatId = chatId;
+      await this._get(`${this._apiUrl}/getMe`);
+      await this._post(`${this._apiUrl}/getChat`, { chat_id: chatId });
+    } catch (error) {
+      throw new Error(`${this._ctx}, _init input token:${token} chatId:${chatId} err:`, err);
+    }
+  }
 
-						message += partsOfLog ? `${partsOfLog} ` : '';
-					} else {
-						message += `${current} `;
-					}
-				}
-				return message;
-			}, '')}</pre>\n\n` +
-			mentions.join(' ')
-		);
-	};
+  /**
+   * @private
+   * @description Sends log to chat
+   * @param {String} type log message type
+   * @param {any[]} data
+   */
+  async _sendMessage(type, data) {
+    try {
+      await this._post(`${this._apiUrl}/sendMessage`, {
+        chat_id: this._chatId,
+        text: this._fmt(type, data),
+        parse_mode: 'HTML',
+      });
+    } catch (err) {
+      throw new Error(
+        `${this._ctx}, _sendMessage input type:${type} data:${util.inspect(data, { depth: null })} err:`,
+        err
+      );
+    }
+  }
 
-	/**
-	 * Sends `debug` message to chat
-	 */
-	debug(...data) {
-		return this._sendMessage(this.debug.name, data);
-	}
+  /**
+   * @private
+   * @description Formats message `body` of given `type`
+   * @param {String} type message type
+   * @param {any[]} body
+   * @returns {String} formatted text
+   */
+  _fmt(type, body) {
+    let head = '';
+    switch (type) {
+      case this.debug.name:
+        head = `⚙️ ${type.toUpperCase()}\n`;
+        break;
 
-	/**
-	 * Sends `error` message to chat
-	 */
-	error(...data) {
-		return this._sendMessage(this.error.name, data);
-	}
+      case this.error.name:
+        head = `🆘 ${type.toUpperCase()}\n`;
+        break;
 
-	/**
-	 * Sends `log` message to chat
-	 */
-	log(...data) {
-		return this._sendMessage(this.log.name, data);
-	}
+      default:
+        head = `ℹ️ ${this.log.name.toUpperCase()}\n`;
+        break;
+    }
+
+    const mentions = [];
+    const tags = [];
+
+    let text = '';
+    body.forEach(arg => {
+      if (Array.isArray(arg)) {
+        text += `\n${util.inspect(arg, { depth: null })}`;
+      } else if (typeof arg === 'object') {
+        text += `\n${util.inspect(arg, { depth: null, compact: false })}`;
+      } else if (typeof arg === 'string') {
+        if (arg.startsWith('@')) {
+          mentions.push(arg);
+        } else if (arg.startsWith('#')) {
+          tags.push(arg);
+        } else {
+          text += `${arg}`;
+        }
+      } else {
+        text += `${arg}`;
+      }
+    });
+    return `<b>${head}</b>` + `${tags.join(' ')}\n\n` + `<pre>${text}</pre>\n\n` + mentions.join(' ');
+  }
+
+  /**
+   * @private
+   * @description Http send get requset
+   * @param {string} url
+   */
+  async _get(url) {
+    return new Promise((resolve, reject) => {
+      let data = '';
+      https.get(url, res => {
+        res.on('data', chunk => (data += chunk));
+        res.on('end', () => resolve(JSON.parse(data)));
+        res.on('error', () => reject(data));
+      });
+    });
+  }
+
+  /**
+   * @private
+   * @description Http send post requset url params
+   * @param {string} url
+   * @param {Record<string, any>} params
+   */
+  async _post(url, params) {
+    return new Promise((resolve, reject) => {
+      let data = '';
+      const req = https.request(url + '?' + new URLSearchParams(params), res => {
+        res.on('data', chunk => (data += chunk));
+        res.on('end', () => resolve(JSON.parse(data)));
+        res.on('error', () => reject(data));
+      });
+      req.end();
+    });
+  }
 };
