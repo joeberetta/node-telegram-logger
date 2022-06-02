@@ -15,7 +15,7 @@ logger.debug('Debug some module: ', {
 
 // Mention user, who must to pay attention to this message
 // Note: @mentions work only if part of message starts with @username
-logger.error('@joeberetta', 'Something went wrong:', [
+logger.error('@joeberetta', '#uwu', 'Something went wrong:', [
 	1,
 	{ formatted: true },
 	'wow',

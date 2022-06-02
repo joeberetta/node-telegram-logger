@@ -5,7 +5,7 @@ Simple [Telegram](https://telegram.org) logger for node.js.
 ## Install
 
 ```bash
-$ npm install node-telegram-logger
+$ npm install node-telegram-log
 ```
 
 ## Prerequisites
@@ -47,11 +47,7 @@ logger.debug('Just debugging it', { canILogObjects: true });
 
 // Mention user, who must to pay attention to this message
 // Note: @mentions work only if part of message starts with @username
-logger.error('@joeberetta', 'Something went wrong:', [
-	1,
-	{ formatted: true },
-	'wow',
-]);
+logger.error('@joeberetta', 'Something went wrong:', [1, { formatted: true }, 'wow']);
 // Formatted message
 /**
  * 🆘 ERROR

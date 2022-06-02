@@ -23,7 +23,5 @@
 		"url": "https://t.me/joeberetta"
 	},
 	"license": "MIT",
-	"dependencies": {
-		"superagent": "^5.3.1"
-	}
+	"dependencies": {}
 }
