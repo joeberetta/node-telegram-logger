@@ -59,24 +59,6 @@ logger.error('@joeberetta', 'Something went wrong:', [1, { formatted: true }, 'w
  */
 ```
 
-## Changelog
-
-### 1.0.2
-
-- [x] Refactor core module by [@pawka9](https://github.com/pawka9)
-- [x] Add github action for npm publishing
-
-### 1.0.1
-
-- [x] Add user @mention for parts of message started with @username
-- [x] Add changelog
-- [x] Add usage examples
-
-### 1.0.0
-
-- [x] Support node >= 12 LTS
-- [x] Support sending log, debug, error messages to private and group chats
-
 ## Author
 
 **Joe Beretta**
