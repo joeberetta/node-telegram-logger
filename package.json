@@ -1,6 +1,6 @@
 {
 	"name": "node-telegram-log",
-	"version": "1.0.1",
+	"version": "1.0.0",
 	"description": "Node.js log sender to Telegram",
 	"main": "index.js",
 	"keywords": [
