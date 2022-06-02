@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/joeberetta/node-telegram-logger/compare/v1.0.2...v1.0.3) (2022-06-02)
+
+
+### Bug Fixes
+
+* github action env var name ([a586d27](https://github.com/joeberetta/node-telegram-logger/commit/a586d27fdcc15150afeef9e1718d6c1e09aea6df))
+
 # 1.0.0 (2022-06-02)
 
 
