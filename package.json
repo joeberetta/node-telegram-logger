@@ -23,5 +23,7 @@
 		"url": "https://t.me/joeberetta"
 	},
 	"license": "MIT",
-	"dependencies": {}
+	"devDependencies": {
+		"semantic-release": "^19.0.2"
+	}
 }
