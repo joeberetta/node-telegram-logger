@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/joeberetta/node-telegram-logger/compare/v1.0.3...v1.1.0) (2022-12-28)
+
+
+### Features
+
+* add types, add plain function ([2b5781f](https://github.com/joeberetta/node-telegram-logger/commit/2b5781fc257036a8e53d6a9611c6d858bbed3200))
+
 ## [1.0.3](https://github.com/joeberetta/node-telegram-logger/compare/v1.0.2...v1.0.3) (2022-06-02)
 
 
