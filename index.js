@@ -45,6 +45,14 @@ exports.TelegramLogger = class TelegramLogger {
   }
 
   /**
+   * Sends `plain` message to chat
+   * @param {any} data
+   */ 
+  plain(...data) {
+    return this._sendMessage('', data, false);
+  }
+
+  /**
    * @description Initial validation of bot `token` and `chatId`
    * @param {string} token
    * @param {number} chatId
@@ -67,11 +75,11 @@ exports.TelegramLogger = class TelegramLogger {
    * @param {String} type log message type
    * @param {any[]} data
    */
-  async _sendMessage(type, data) {
+  async _sendMessage(type, data, format = true) {
     try {
       await this._post(`${this._apiUrl}/sendMessage`, {
         chat_id: this._chatId,
-        text: this._fmt(type, data),
+        text: format ? this._fmt(type, data) : data,
         parse_mode: 'HTML',
       });
     } catch (err) {
